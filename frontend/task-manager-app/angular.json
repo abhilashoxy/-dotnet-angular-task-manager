@@ -65,13 +65,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "task-manager-app:build:production"
+              "buildTarget": "task-manager-app:build:production",
+              "proxyConfig": "proxy.conf.prod.json"
             },
             "development": {
-              "buildTarget": "task-manager-app:build:development"
+              "buildTarget": "task-manager-app:build:development",
+               "proxyConfig": "proxy.conf.dev.json"
             }
           },
           "defaultConfiguration": "development"
+          
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"

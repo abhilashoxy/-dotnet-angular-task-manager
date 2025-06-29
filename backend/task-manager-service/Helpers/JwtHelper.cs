@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using task_manager_service.Interfaces;
-using task_manager_service.Models;
+
 
 namespace task_manager_service.Helpers
 {
@@ -14,10 +14,15 @@ namespace task_manager_service.Helpers
 
         public string GenerateToken(User user)
         {
-            var claims = new[] {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+            var claims = new[]
+            {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(ClaimTypes.Email, user.Email),
+          new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+          new Claim("userId", user.Id.ToString()),// ✅ Required for user context
+    };
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
