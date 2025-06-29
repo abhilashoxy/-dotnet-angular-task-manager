@@ -6,7 +6,8 @@ using task_manager_service.Interfaces;
 namespace task_manager_service.Controllers
 {
 
-    [ApiController, Route("api/auth")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

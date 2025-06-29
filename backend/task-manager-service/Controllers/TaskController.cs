@@ -6,8 +6,9 @@ using task_manager_service.Interfaces;
 
 namespace task_manager_service.Controllers
 {
-    [ApiController, Route("api/tasks")]
     [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
     public class TaskController : ControllerBase
     {
         private readonly ITaskService _taskService;

@@ -1,60 +1,53 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../auth/auth.service';
 import { TaskFormComponent } from '../task-form/task-form.component';
+import { TaskService } from '../task.service';
+import { Task } from '../task.model';
 
-
-interface Task {
-  id: number;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-}
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule,TaskFormComponent],
+  imports: [CommonModule, TaskFormComponent],
   templateUrl: './task-list.component.html'
 })
 export class TaskListComponent implements OnInit {
-  private http = inject(HttpClient);
   private auth = inject(AuthService);
-  selectedTask: Task | null = null;
+  private taskService = inject(TaskService);
   tasks: Task[] = [];
+  selectedTask: Task | null = null;
 
   ngOnInit(): void {
     this.getTasks();
   }
 
   getTasks() {
-    this.http.get<Task[]>('https://localhost:44361/api/tasks')
-      .subscribe({
-        next: res => this.tasks = res,
-        error: err => alert('Failed to fetch tasks')
-      });
+    this.taskService.getTasks().subscribe({
+      next: res => this.tasks = res,
+      error: err => alert('Failed to fetch tasks')
+    });
   }
 
   logout() {
     this.auth.logout();
     location.href = '/login';
   }
+
   editTask(task: Task) {
-  this.selectedTask = { ...task }; // shallow copy
-}
+    this.selectedTask = { ...task };
+  }
 
-onTaskSaved() {
-  this.selectedTask = null;
-  this.getTasks();
-}
+  onTaskSaved() {
+    this.selectedTask = null;
+    this.getTasks();
+  }
 
-deleteTask(id: number) {
-  if (!confirm('Delete this task?')) return;
-
-  this.http.delete(`https://localhost:44361/api/tasks/${id}`).subscribe({
-    next: () => this.getTasks(),
-    error: () => alert('Delete failed')
-  });
-}
+  deleteTask(id: number) {
+    if (!confirm('Delete this task?')) return;
+    this.taskService.deleteTask(id).subscribe({
+      next: () => this.getTasks(),
+      error: () => alert('Delete failed')
+    });
+  }
 }

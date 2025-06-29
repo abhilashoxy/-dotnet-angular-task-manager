@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using task_manager_service.Data;
 using task_manager_service.Interfaces;
-using task_manager_service.Models;
+
 
 namespace task_manager_service.Repositories
 {
