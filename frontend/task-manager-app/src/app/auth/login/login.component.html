@@ -1,0 +1,36 @@
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+  <div class="card shadow p-4" style="min-width: 350px; max-width: 400px; width: 100%;">
+    <h3 class="text-center mb-4">Login</h3>
+
+    <!-- Alerts -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ errorMessage }}
+      <button type="button" class="btn-close" (click)="errorMessage = null" aria-label="Close"></button>
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" (click)="successMessage = null" aria-label="Close"></button>
+    </div>
+
+    <form (ngSubmit)="onLogin()" [formGroup]="loginForm">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" class="form-control" placeholder="Enter email" formControlName="email">
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" class="form-control" placeholder="Enter password" formControlName="password">
+      </div>
+
+      <div class="d-grid">
+        <button class="btn btn-primary" type="submit" [disabled]="loginForm.invalid">Login</button>
+      </div>
+    </form>
+
+    <div class="text-center mt-3">
+      <a routerLink="/register">Don't have an account? Register</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+<form (ngSubmit)="saveTask()">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" [(ngModel)]="taskModel.title" name="title" required />
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <input type="text" class="form-control" [(ngModel)]="taskModel.description" name="description" />
+  </div>
+
+  <div class="form-check form-switch mb-3">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      id="completed"
+      [(ngModel)]="taskModel.isCompleted"
+      name="isCompleted"
+    />
+    <label class="form-check-label" for="completed">Completed</label>
+  </div>
+
+  <button type="submit" class="btn btn-primary w-100">
+    {{ taskModel.id ? 'Update' : 'Add' }} Task
+  </button>
+</form>

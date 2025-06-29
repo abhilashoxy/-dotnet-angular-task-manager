@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  /* ensure content area scrolls if it grows taller than the viewport */
+  overflow-y: auto;
+}
+
+/* Optional: Add a subtle shadow under navbar & above footer */
+nav {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+footer {
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
