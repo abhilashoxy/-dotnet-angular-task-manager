@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore
-COPY task-manager-service/task-manager-service.csproj ./task-manager-service/
+COPY task-manager-service/task-manager-service.csproj ./
 RUN dotnet restore ./task-manager-service/task-manager-service.csproj
 
 # Copy all project files
