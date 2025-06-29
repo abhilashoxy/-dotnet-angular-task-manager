@@ -3,13 +3,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy csproj and restore
-COPY task-manager-service/task-manager-service.csproj ./task-manager-service/
-RUN dotnet restore ./task-manager-service/task-manager-service.csproj
+COPY backend/task-manager-service/task-manager-service.csproj ./backend/task-manager-service/
+RUN dotnet restore ./backend/task-manager-service/task-manager-service.csproj
 
 # Copy all project files
 COPY . .
 
-WORKDIR /src/task-manager-service
+WORKDIR /src/backend/task-manager-service
 RUN dotnet build -c Release -o /app/build
 RUN dotnet publish -c Release -o /app/publish
 
