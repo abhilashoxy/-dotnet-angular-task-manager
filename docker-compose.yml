@@ -4,7 +4,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
     environment:
-      SA_PASSWORD: "abhilash"
+      SA_PASSWORD: "Abhilash@123"
       ACCEPT_EULA: "Y"
     ports:
       - "1433:1433"
@@ -20,17 +20,17 @@ services:
       - "5000:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=Abhilash-K-PC\MSSQLSERVER01;Database=TaskDb;User Id=abhilash;Password=abhilash;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=TaskDb;User Id=sa;Password=Abhilash@123;TrustServerCertificate=True;
     depends_on:
       - sqlserver
 
   frontend:
+    container_name: dotnet-angular-task-manager-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: taskmanager-frontend
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - backend
 
