@@ -78,7 +78,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.WebHost.UseUrls("http://localhost:5000", "http://*:80");
+builder.WebHost.UseUrls("http://localhost:44361", "http://*:80");
 
 var app = builder.Build();
 
