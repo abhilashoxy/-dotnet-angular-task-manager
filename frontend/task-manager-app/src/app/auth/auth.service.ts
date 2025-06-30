@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(data: any) {
-    return this.http.post(`${this.api}/auth/login`, data).pipe(
+    return this.http.post(`${this.api}/Auth/login`, data).pipe(
       tap((res: any) => {
         if (res?.token) localStorage.setItem('token', res.token);
       })
@@ -20,7 +20,7 @@ export class AuthService {
   }
 
   register(data: any) {
-    return this.http.post(`${this.api}/auth/register`, data);
+    return this.http.post(`${this.api}/Auth/register`, data);
   }
 
   get token(): string | null {
