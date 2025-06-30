@@ -1,6 +1,7 @@
 # Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+EXPOSE 80
 
 # Copy csproj and restore
 COPY task-manager-service/task-manager-service.csproj ./task-manager-service/
@@ -19,3 +20,5 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 ENTRYPOINT ["dotnet", "task-manager-service.dll"]
+
+
