@@ -9,8 +9,11 @@ namespace task_manager_service.Data
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            // Use your connection string (this is for local SQL Server)
-            optionsBuilder.UseSqlServer("Server=ABHILASH-K-PC\\MSSQLSERVER01;Database=TaskManagerDb;User Id=abhilash;Password=Abhilash$123;Trusted_Connection=True;TrustServerCertificate=True;");
+            var connectionString = "Server=localhost;Database=TaskManagerDb;User=root;Password=Abhilash$1992;";
+
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 36)); // Replace with your MySQL version
+
+            optionsBuilder.UseMySql(connectionString, serverVersion);
 
             return new ApplicationDbContext(optionsBuilder.Options);
         }
