@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class TaskService {
   private http = inject(HttpClient);
-  private baseUrl = `${environment.apiUrl}/task`;
+  private baseUrl = `${environment.apiUrl}/Task`;
 
   getTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.baseUrl);

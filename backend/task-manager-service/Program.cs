@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,8 +14,14 @@ using task_manager_service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<ApplicationDbContext>(opt =>
+//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sql => sql.EnableRetryOnFailure(6, TimeSpan.FromSeconds(5), null) // optional but helpful
+    )
+);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
@@ -30,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         {
             ValidateIssuer = true,
             ValidateAudience = true,
+            ValidateLifetime = true,
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
@@ -41,10 +49,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("AllowAngular", b =>
-        b.WithOrigins("http://localhost:4200", "https://localhost:4200", "http://localhost")
-         .AllowAnyHeader()
-         .AllowAnyMethod()
-         .AllowCredentials());
+        b.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod());
 });
 
 builder.Services.AddControllers();
@@ -78,11 +85,11 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.WebHost.UseUrls("http://localhost:44361", "http://*:80");
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

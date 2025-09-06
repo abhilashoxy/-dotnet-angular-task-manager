@@ -19,6 +19,7 @@ namespace task_manager_service.Repositories
             if (task == null) return null;
             task.Title = dto.Title;
             task.Description = dto.Description;
+            task.IsCompleted = dto.IsCompleted;
             await _ctx.SaveChangesAsync();
             return task;
         }

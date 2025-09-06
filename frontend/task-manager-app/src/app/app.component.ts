@@ -20,6 +20,9 @@ export class AppComponent {
 
   constructor(public auth: AuthService, private router: Router) {}
 
+  get isLoogedIn(): boolean {
+    return this.auth.isLoggedIn();  
+  }
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);

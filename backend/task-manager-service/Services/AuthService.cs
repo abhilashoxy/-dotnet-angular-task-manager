@@ -18,7 +18,13 @@ namespace task_manager_service.Services
         {
             if (await _userRepo.ExistsAsync(dto.Email)) return new AuthResponse { Success = false, Message = "Email exists" };
 
-            var user = new User { Email = dto.Email, PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password) };
+            var user = new User
+            {
+                Email = dto.Email,
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                Username = dto.Username,
+                Address = dto.Address
+            };
             await _userRepo.AddAsync(user);
             var token = _jwtHelper.GenerateToken(user);
             return new AuthResponse { Success = true, Token = token };

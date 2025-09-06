@@ -10,9 +10,29 @@ namespace task_manager_service.Repositories
         private readonly ApplicationDbContext _ctx;
         public UserRepository(ApplicationDbContext ctx) => _ctx = ctx;
 
-        public Task<bool> ExistsAsync(string email) => _ctx.Users.AnyAsync(u => u.Email == email);
-        public Task<User> GetByEmailAsync(string email) => _ctx.Users.SingleOrDefaultAsync(u => u.Email == email);
-        public async Task AddAsync(User user) { _ctx.Users.Add(user); await _ctx.SaveChangesAsync(); }
+        public Task<bool> ExistsAsync(string email)
+            => _ctx.Users.AnyAsync(u => u.Email == email);
+
+        public Task<User?> GetByEmailAsync(string email)
+            => _ctx.Users.SingleOrDefaultAsync(u => u.Email == email);
+
+        public Task<User?> GetByIdAsync(int id)
+            => _ctx.Users.SingleOrDefaultAsync(u => u.Id == id);
+
+        public async Task AddAsync(User user)
+        {
+            _ctx.Users.Add(user);
+            await _ctx.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            var existingUser = await _ctx.Users.FindAsync(user.Id);
+            if (existingUser == null) return;
+
+            _ctx.Entry(existingUser).CurrentValues.SetValues(user);
+            await _ctx.SaveChangesAsync();
+        }
     }
 
 }

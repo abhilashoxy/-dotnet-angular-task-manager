@@ -19,8 +19,10 @@ namespace task_manager_service.Helpers
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         new Claim(ClaimTypes.Email, user.Email),
-          new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+          //new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
           new Claim("userId", user.Id.ToString()),// ✅ Required for user context
+            new Claim("username", user.Username), // ✅ custom claim
+    new Claim("address", user.Address ?? "")
     };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

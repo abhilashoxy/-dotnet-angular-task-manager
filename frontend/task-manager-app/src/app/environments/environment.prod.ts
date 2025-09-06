@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://localhost:5000/api' // Docker Compose service name
+  //apiUrl: 'http://20.120.204.11/api'
+  apiUrl: 'https://localhost:44361/api'
 };

@@ -15,6 +15,16 @@
 
     <form (ngSubmit)="onRegister()" [formGroup]="registerForm">
       <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" type="text" class="form-control" placeholder="Enter username" formControlName="username">
+      </div>
+
+      <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <input id="address" type="text" class="form-control" placeholder="Enter address" formControlName="address">
+      </div>
+
+      <div class="mb-3">
         <label for="email" class="form-label">Email</label>
         <input id="email" type="email" class="form-control" placeholder="Enter email" formControlName="email">
       </div>
