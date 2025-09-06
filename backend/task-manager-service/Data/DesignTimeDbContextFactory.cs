@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace task_manager_service.Data
 {
@@ -7,15 +10,22 @@ namespace task_manager_service.Data
     {
         public ApplicationDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            // Read the SAME connection string as runtime
+            var basePath = Directory.GetCurrentDirectory();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(basePath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddEnvironmentVariables()
+                .Build();
 
-            var connectionString = "Server=localhost;Database=TaskManagerDb;User=root;Password=Abhilash$1992;";
+            var cs = config.GetConnectionString("DefaultConnection")
+                     ?? "Server=(localdb)\\MSSQLLocalDB;Database=TaskManagerDb;Trusted_Connection=True;MultipleActiveResultSets=True";
 
-            var serverVersion = new MySqlServerVersion(new Version(8, 0, 36)); // Replace with your MySQL version
+            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            builder.UseSqlServer(cs, sql => sql.EnableRetryOnFailure(6, TimeSpan.FromSeconds(5), null));
 
-            optionsBuilder.UseMySql(connectionString, serverVersion);
-
-            return new ApplicationDbContext(optionsBuilder.Options);
+            return new ApplicationDbContext(builder.Options);
         }
     }
 }

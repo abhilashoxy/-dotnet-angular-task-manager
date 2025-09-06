@@ -17,8 +17,11 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 //    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 36))));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sql => sql.EnableRetryOnFailure(6, TimeSpan.FromSeconds(5), null) // optional but helpful
+    )
+);
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITaskService, TaskService>();
